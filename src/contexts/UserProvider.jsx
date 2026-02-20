@@ -1,6 +1,7 @@
 //UserProvider.jsx
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
+import API_BASE from "../lib/apiBase";
 export function UserProvider ({children}) {
  // const initialUser = {
  // isLoggedIn: false,
@@ -10,7 +11,7 @@ export function UserProvider ({children}) {
  const initialUser = JSON.parse(localStorage.getItem("session")) ?? {
  isLoggedIn: false, name: '', email: ''
  };
- const API_URL = import.meta.env.VITE_API_URL;
+ const API_URL = API_BASE;
  const [user, setUser] = useState(initialUser);
  const login = async (email, password) => {
  try {
@@ -24,8 +25,8 @@ export function UserProvider ({children}) {
  }),
  credentials: "include"
  });
- if (result.status != 200) {
- console.log("Login Exception: ", error);
+ if (result.status !== 200) {
+ console.log("Login failed with status: ", result.status);
  return false;
  }
  else {
@@ -33,6 +34,7 @@ export function UserProvider ({children}) {
  const newUser = { isLoggedIn: true, name: '', email: email };
  setUser(newUser);
  localStorage.setItem("session", JSON.stringify(newUser));
+ return true;
  }
  }
  catch (error) {
