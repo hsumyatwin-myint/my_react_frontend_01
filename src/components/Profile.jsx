@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
-import API_BASE from "../lib/apiBase";
+import { apiUrl, PUBLIC_BASE } from "../lib/apiBase";
 
 const initialProfile = {
   id: "",
@@ -20,13 +20,12 @@ export default function Profile() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const fileInputRef = useRef(null);
-  const API_URL = API_BASE;
 
   async function fetchProfile() {
     setErrorMessage("");
 
     try {
-      const response = await fetch(`${API_URL}/api/user/profile`, {
+      const response = await fetch(apiUrl("/user/profile"), {
         credentials: "include",
       });
 
@@ -66,7 +65,7 @@ export default function Profile() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/user/profile`, {
+      const response = await fetch(apiUrl("/user/profile"), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -122,7 +121,7 @@ export default function Profile() {
     formData.append("file", file);
 
     try {
-      const response = await fetch(`${API_URL}/api/user/profile/image`, {
+      const response = await fetch(apiUrl("/user/profile/image"), {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -157,7 +156,7 @@ export default function Profile() {
     setIsUploading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/user/profile/image`, {
+      const response = await fetch(apiUrl("/user/profile/image"), {
         method: "DELETE",
         credentials: "include",
       });
@@ -215,7 +214,7 @@ export default function Profile() {
             <div className="avatar-wrap">
               {profile.profileImage ? (
                 <img
-                  src={`${API_URL}${profile.profileImage}`}
+                  src={`${PUBLIC_BASE}${profile.profileImage}`}
                   alt="Profile"
                   className="avatar-img"
                 />

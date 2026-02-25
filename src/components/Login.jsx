@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
-import API_BASE from "../lib/apiBase";
+import { apiUrl } from "../lib/apiBase";
 
 export default function Login() {
-  const API_URL = API_BASE;
-  const { user, login } = useUser();
+    const { user, login } = useUser();
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [controlState, setControlState] = useState({
     isLoggingIn: false,
@@ -70,7 +69,7 @@ export default function Login() {
     }));
 
     try {
-      const response = await fetch(`${API_URL}/api/user`, {
+      const response = await fetch(apiUrl("/user"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

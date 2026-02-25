@@ -1,7 +1,7 @@
 //UserProvider.jsx
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
-import API_BASE from "../lib/apiBase";
+import { apiUrl } from "../lib/apiBase";
 export function UserProvider ({children}) {
  // const initialUser = {
  // isLoggedIn: false,
@@ -11,11 +11,10 @@ export function UserProvider ({children}) {
  const initialUser = JSON.parse(localStorage.getItem("session")) ?? {
  isLoggedIn: false, name: '', email: ''
  };
- const API_URL = API_BASE;
- const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState(initialUser);
  const login = async (email, password) => {
  try {
- const result = await fetch(`${API_URL}/api/user/login`, {
+ const result = await fetch(apiUrl("/user/login"), {
  method: "POST",
  headers: { 'Content-Type': 'application/json'
  },
@@ -43,7 +42,7 @@ export function UserProvider ({children}) {
  }
  }
  const logout = async () => {
- const result = await fetch(`${API_URL}/api/user/logout`, {
+ const result = await fetch(apiUrl("/user/logout"), {
  method: "POST",
  credentials: "include"
  });
